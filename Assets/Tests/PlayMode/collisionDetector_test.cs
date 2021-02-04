@@ -13,25 +13,25 @@ namespace Tests
         GameObject wall;
         SphereCollider playerCollider;
         Movement movementScript;
-        // A Test behaves as an ordinary method
-        [Test]
-        public void collisionDetector_testSimplePasses()
-        {
-            // Use the Assert class to test conditions
-        }
 
-        // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-        // `yield return null;` to skip a frame.
+
+        /// <summary>
+        /// PlayMode test if player collides with a wall from front
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
-        public IEnumerator collisionDetector_whenSpheresCollideFromFront_thenStops()
+        public IEnumerator collisionDetector_whenPlayerCollidesFromFront_thenStops()
         {
+            //arranging objects
             Arrange(Vector3.forward);
 
+            //creating ray to detect a collision
             var ray = new Ray(player.transform.position, player.transform.forward);
             RaycastHit hit;
+
+            //move until collide
             while (!Physics.Raycast(ray, out hit, playerCollider.radius))
             {
-
                 movementScript.MoveUp();
                 ray = new Ray(player.transform.position, player.transform.forward);
                 yield return new WaitForEndOfFrame();
@@ -39,21 +39,21 @@ namespace Tests
 
             var lastPos = player.transform.position;
 
-
-
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
-            //Assert.True(movementScript.isCollided);
 
-            Assert.LessOrEqual(System.Math.Round(player.transform.position.z, 1)
-                , System.Math.Round(lastPos.z));
+            //asserting whether object position is less of equal to a last collided
+            Assert.LessOrEqual(System.Math.Round(player.transform.position.z, 1), System.Math.Round(lastPos.z));
 
             Delete();
         }
 
-
+        /// <summary>
+        /// PlayMode test if player collides with a wall from back
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
-        public IEnumerator collisionDetector_whenSpheresCollideFromBack_thenStops()
+        public IEnumerator collisionDetector_whenPlayerCollidesFromBack_thenStops()
         {
             Arrange(-Vector3.forward);
 
@@ -61,7 +61,6 @@ namespace Tests
             RaycastHit hit;
             while (!Physics.Raycast(ray, out hit, playerCollider.radius))
             {
-
                 movementScript.MoveDown();
                 ray = new Ray(player.transform.position, -player.transform.forward);
                 yield return new WaitForEndOfFrame();
@@ -69,26 +68,30 @@ namespace Tests
 
             var lastPos = player.transform.position;
 
-
-
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
-            //Assert.True(movementScript.isCollided);
 
-            Assert.GreaterOrEqual(System.Math.Round(player.transform.position.z, 1)
-                , System.Math.Round(lastPos.z));
+            //asserting whether object position is greater of equal to a last collided
+            Assert.GreaterOrEqual(System.Math.Round(player.transform.position.z, 1), System.Math.Round(lastPos.z));
 
             Delete();
         }
 
+        /// <summary>
+        /// Special method for clearing used game objects after a test
+        /// </summary>
         private void Delete()
         {
             GameObject.Destroy(wall);
             GameObject.Destroy(player);
         }
 
+        /// <summary>
+        /// PlayMode test if player collides with a wall from right
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
-        public IEnumerator collisionDetector_whenSpheresCollideFromRight_thenStops()
+        public IEnumerator collisionDetector_whenPlayerCollidesFromRight_thenStops()
         {
             Arrange(Vector3.right, 90f);
 
@@ -96,7 +99,6 @@ namespace Tests
             RaycastHit hit;
             while (!Physics.Raycast(ray, out hit, playerCollider.radius))
             {
-
                 movementScript.MoveRight();
                 ray = new Ray(player.transform.position, player.transform.right);
                 yield return new WaitForEndOfFrame();
@@ -105,19 +107,21 @@ namespace Tests
             var lastPos = player.transform.position;
 
 
-
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
-            //Assert.True(movementScript.isCollided);
 
-            Assert.LessOrEqual(System.Math.Round(player.transform.position.x, 1)
-                , System.Math.Round(lastPos.x));
+            //asserting whether object position is less of equal to a last collided
+            Assert.LessOrEqual(System.Math.Round(player.transform.position.x, 1), System.Math.Round(lastPos.x));
 
             Delete();
         }
 
+        /// <summary>
+        /// PlayMode test if player collides with a wall from left
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
-        public IEnumerator collisionDetector_whenSpheresCollideFromLeft_thenStops()
+        public IEnumerator collisionDetector_whenSpheresCollidesFromLeft_thenStops()
         {
             Arrange(Vector3.left, 90f);
 
@@ -125,7 +129,6 @@ namespace Tests
             RaycastHit hit;
             while (!Physics.Raycast(ray, out hit, playerCollider.radius))
             {
-
                 movementScript.MoveLeft();
                 ray = new Ray(player.transform.position, -player.transform.right);
                 yield return new WaitForEndOfFrame();
@@ -134,34 +137,41 @@ namespace Tests
             var lastPos = player.transform.position;
 
 
-
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
-            //Assert.True(movementScript.isCollided);
 
-            Assert.GreaterOrEqual(System.Math.Round(player.transform.position.x, 1)
-                , System.Math.Round(lastPos.x));
+            //asserting whether object position is greater of equal to a last collided
+            Assert.GreaterOrEqual(System.Math.Round(player.transform.position.x, 1), System.Math.Round(lastPos.x));
 
             Delete();
         }
 
+        /// <summary>
+        /// Special method for arranging GameObjects (spawning) and setting their properties
+        /// </summary>
+        /// <param name="wallDirection"></param>
+        /// <param name="rotation"></param>
         private void Arrange(Vector3 wallDirection, float rotation = default)
         {
+            //instantiate a camera to see a scene
             if (camera == null)
             {
                 camera = GameObject.Instantiate(Resources.Load("Main Camera") as GameObject);
             }
 
+            //instantiate player
             player = GameObject.Instantiate(Resources.Load("PlayerPrefab") as GameObject);
             playerCollider = player.GetComponent<SphereCollider>();
             movementScript = player.GetComponent<Movement>();
 
+            //instantiate wall
             wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
             wall.transform.position += wallDirection * 2;
             if (rotation != default)
             {
-                wall.transform.Rotate(new Vector3(0,rotation,0));
+                wall.transform.Rotate(new Vector3(0, rotation, 0));
             }
+
             wall.transform.localScale = new Vector3(10, 10, 1);
             wall.AddComponent<Rigidbody>().useGravity = false;
         }
