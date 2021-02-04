@@ -16,7 +16,7 @@ public class CollisionDetector : MonoBehaviour
     {
         movement.isCollided = true;
     }
-
+    
     private void OnTriggerExit(Collider other)
     {
         movement.isCollided = false;

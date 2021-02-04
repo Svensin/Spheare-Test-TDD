@@ -7,13 +7,12 @@ public class VictoryPoint : MonoBehaviour
     public bool isPlayer = false;
     public bool isEnemy = false;
 
-    public string WIN = "";
+    public string winner = "";
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    /// <summary>
+    /// Checks for collision with a victory point. If a collided object has a specific tag - decide who is a winner
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -25,29 +24,19 @@ public class VictoryPoint : MonoBehaviour
             isEnemy = true;
         }
 
-        Win();
-    }
-
-    public void Win() {
-        
         Invoke("StopGame", 0.1f);
     }
 
+    /// <summary>
+    /// Stop the game if someone is at the victory point
+    /// </summary>
     public void StopGame() {
         
-        if (WIN == string.Empty)
+        if (winner == string.Empty)
         {
-            WIN = isPlayer && !isEnemy ? "Player" : "Enemy";
-            Debug.Log("Win " + WIN);
+            winner = isPlayer && !isEnemy ? "Player" : "Enemy";
+            //logging the winner
+            Debug.Log("Win " + winner);
         }
-    }
-
-    
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
