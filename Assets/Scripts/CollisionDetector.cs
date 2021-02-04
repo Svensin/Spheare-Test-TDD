@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class CollisionDetector : MonoBehaviour
 {
-    [SerializeField] Movement movement;
-   
+    Movement movement;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        movement = gameObject.GetComponent<Movement>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         movement.isCollided = true;
-        Debug.Log("Has to stop moving!");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit(Collider other)
     {
-        
+        movement.isCollided = false;
     }
 }

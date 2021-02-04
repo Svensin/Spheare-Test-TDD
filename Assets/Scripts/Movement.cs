@@ -7,7 +7,6 @@ public class Movement : MonoBehaviour
 	float speed = 100f;
 	public bool isCollided;
 	Transform transformSphere;
-	//Rigidbody rigidbody;
 	public GameObject objChild;
 	// Start is called before the first frame update
 	void Start ( )
@@ -15,7 +14,6 @@ public class Movement : MonoBehaviour
 		isCollided = false;
 		transformSphere = transform;
 		objChild = transform.GetChild( 0 ).gameObject;
-		//rigidbody = gameObject.GetComponent<Rigidbody>();
 	}
 
 
@@ -42,12 +40,14 @@ public class Movement : MonoBehaviour
 	public void MoveUp ( )
 	{
 		if (!isCollided)
-        {
+		{
 			transform.Translate(Vector3.forward * Time.deltaTime);
-
-			//rigidbody.velocity = Vector3.forward;
 			objChild.transform.Rotate(Vector3.right * Time.deltaTime * speed, Space.World);
+
 		}
+		
+		
+
 		 
 	}
 
@@ -56,8 +56,8 @@ public class Movement : MonoBehaviour
 		if (!isCollided)
 		{
 			transform.Translate(-Vector3.forward * Time.deltaTime);
-			//rigidbody.velocity = -Vector3.forward;
 			objChild.transform.Rotate(-Vector3.right * Time.deltaTime * speed, Space.World);
+	
 		}
 		
 	}
@@ -66,11 +66,12 @@ public class Movement : MonoBehaviour
 	{	
 		if (!isCollided)
         {
-			transform.Translate(Vector3.left * Time.deltaTime);
-			//rigidbody.velocity = Vector3.left;
+			transform.Translate(Vector3.left * Time.deltaTime);;
 			objChild.transform.Rotate(Vector3.forward * Time.deltaTime * speed, Space.World);
+			
 		}
 		
+
 	}
 
 	public void MoveRight ( )
@@ -78,10 +79,11 @@ public class Movement : MonoBehaviour
 		if (!isCollided)
 		{
 			transform.Translate(Vector3.right * Time.deltaTime);
-			//rigidbody.velocity = Vector3.right;
 			objChild.transform.Rotate(-Vector3.forward * Time.deltaTime * speed, Space.World);
+	
 		}
-		
+	
+
 	}
 
 

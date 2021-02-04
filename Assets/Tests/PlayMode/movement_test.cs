@@ -20,7 +20,7 @@ namespace Tests
 				camera = GameObject.Instantiate( Resources.Load( "Main Camera" ) as GameObject );
 			}
 
-			sphere = GameObject.Instantiate( Resources.Load( "Sphere" ) as GameObject );
+			sphere = GameObject.Instantiate( Resources.Load("PlayerPrefab") as GameObject );
 			child = sphere.transform.GetChild( 0 ).gameObject;
 			sphere.GetComponent<Movement>().objChild = child;
 		}
