@@ -28,7 +28,8 @@ namespace Tests
 
             GameObject sphere = GameObject.Instantiate(Resources.Load("Sphere") as GameObject );
             SphereCollider col = sphere.GetComponent<SphereCollider>();
-            sphere.GetComponent<Movement>().objChild = sphere.transform.GetChild(0).gameObject;
+            Movement movementScript = sphere.GetComponent<Movement>();
+
             GameObject cube =  GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position += Vector3.forward * 2;
             cube.transform.localScale = new Vector3(10, 10, 1);
@@ -37,29 +38,16 @@ namespace Tests
 
             var ray = new Ray(sphere.transform.position, sphere.transform.forward);
             RaycastHit hit;
-           
             float maxDistance = col.radius;
             while (!Physics.Raycast(ray, out hit, col.radius))
             {
 
-                sphere.GetComponent<Movement>().MoveUp();
+                movementScript.MoveUp();
                 ray = new Ray(sphere.transform.position, sphere.transform.forward);
                 yield return new WaitForEndOfFrame();
             }
-
-            Debug.Log("Colided!");
-
-            Vector3 lastPos = sphere.transform.position;
-
-            // Use the Assert class to test conditions.
-            // Use yield to skip a frame.
-                sphere.GetComponent<Movement>().MoveUp();
-                
-                Assert.AreEqual(System.Math.Round(sphere.transform.position.z, 1),
-                    System.Math.Round(lastPos.z, 1));
-
-                yield return new WaitForEndOfFrame();
-            
+             
+            Assert.IsTrue(movementScript.isCollided);            
         }
     }
 }
